@@ -284,7 +284,7 @@ module "cato_multiregional_new_vwan" {
 
   # Multi-Regional Configuration for NEW vWAN
   regional_config = {
-    "eastus2" = { #Region shortname
+    "eastus2" = { #Your Region shortname
       location         = "Your Region Name e.g. East US 2"
       site_name        = "Your Site-Name here"
       site_description = "Your Site-Description here"
@@ -319,7 +319,7 @@ module "cato_multiregional_new_vwan" {
       hub_routing_preference = "ASPath" #HUB Routing Preference
     }
 
-    "westus2" = { #Region shortname
+    "westus2" = { #Your next region shortname
       location         = "Your Region Name e.g. West US 2"
       site_name        = "Your Site-Name here"
       site_description = "Your Site-Description here"
@@ -473,7 +473,7 @@ module "cato_multiregional_existing_vwan" {
   # Multi-Regional Configuration for EXISTING vWAN
   # These regions will have new hubs created in your existing vWAN
   regional_config = {
-    "centralus" = {
+    "centralus" = { #Your Region Shortname
       location         = "Central US"
       site_name        = "Your-Site-Name-here-Central-US"
       site_description = "Your-Site-Description-here"
@@ -508,7 +508,7 @@ module "cato_multiregional_existing_vwan" {
       hub_routing_preference = "ASPath" #HUB Routing Preference
     }
 
-    "scentralus" = {
+    "scentralus" = { #Your Region Shortname
       location         = "South Central US"
       site_name        = "Your-Site-Name-here-South-Central-US"
       site_description = "Your-Site-Description-here"
@@ -592,7 +592,7 @@ locals {
   # REQUIRED: Update with your existing Azure resource names
   existing_resource_group_name = "Your-existing-resource-group"   # UPDATE WITH YOUR ACTUAL RG NAME
   existing_vwan_name           = "Your-existing-vwan-name"        # UPDATE WITH YOUR ACTUAL vWAN NAME
-  existing_northeurope_hub     = "Your-existing-hub-name-ne"     # UPDATE WITH YOUR ACTUAL HUB NAME
+  existing_northeurope_hub     = "Your-existing-hub-name-ne"     # UPDATE WITH YOUR ACTUAL HUB NAME 
   existing_westeurope_hub      = "Your-existing-hub-name-we"     # UPDATE WITH YOUR ACTUAL HUB NAME
   existing_japaneast_hub       = "Your-existing-hub-name-jp"     # UPDATE WITH YOUR ACTUAL HUB NAME
 }
@@ -666,8 +666,8 @@ module "cato_multiregional_existing_infrastructure" {
   # Multi-Regional Configuration for EXISTING vWAN + EXISTING HUBS
   # These regions must have existing hubs already deployed in your vWAN
   regional_config = {
-    "northeurope" = {
-      location         = "North Europe"
+    "northeurope" = { #Your Region Shortname
+      location         = "Your Location here"
       site_name        = "Your-Site-Name-here-North-Europe"
       site_description = "Your-Site-Description-here"
       site_type        = "CLOUD_DC"
@@ -700,8 +700,8 @@ module "cato_multiregional_existing_infrastructure" {
       existing_hub_name = local.existing_northeurope_hub # UPDATE WITH YOUR ACTUAL HUB NAME
     }
 
-    "westeurope" = {
-      location         = "West Europe"
+    "westeurope" = { #Your Region Shortname
+      location         = "Your Region Here"
       site_name        = "Your-Site-Name-here-West-Europe"
       site_description = "Your-Site-Description-here"
       site_type        = "CLOUD_DC"
@@ -734,8 +734,8 @@ module "cato_multiregional_existing_infrastructure" {
       existing_hub_name = local.existing_westeurope_hub # UPDATE WITH YOUR ACTUAL HUB NAME
     }
 
-    "japaneast" = {
-      location         = "Japan East"
+    "japaneast" = { #Your Region Shortname
+      location         = "Your Region Here"
       site_name        = "Your-Site-Name-here-Japan-East"
       site_description = "Your-Site-Description-here"
       site_type        = "CLOUD_DC"
@@ -798,7 +798,6 @@ $ catocli query siteLocation '{"filters":[{"search": "San Diego","field":"city",
 
 The module creates a highly available Cato vSocket deployment integrated with Azure Virtual WAN:
 
-
 ### Key Architecture Components
 
 - **Azure Virtual WAN**: Centralized hub-and-spoke networking
@@ -808,7 +807,8 @@ The module creates a highly available Cato vSocket deployment integrated with Az
 - **User Defined Routes**: Custom routing for optimal traffic flow
 - **Multi-Regional**: Deploy across multiple Azure regions
 
-Static Architecture Diagram
+#### Static Architecture Diagram
+
 <img src="./images/Azure-vWAN-sockets.png" alt="Cato vSocket Azure vWAN Architecture" width="800">
 
 ## Version Compatibility
@@ -824,9 +824,6 @@ Module is maintained by [Cato Networks](https://github.com/catonetworks) with he
 ## License
 
 Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-azure-vwan-vsocket-ha/tree/master/LICENSE) for full details.
-
-
-
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
