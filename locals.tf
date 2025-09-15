@@ -34,7 +34,7 @@ locals {
   # Azure vWAN hub.virtual_router_asn is always 65515 (Microsoft fixed value)
   # Only create BGP peers for hubs that have virtual_router_ips populated (length >= 2)
   cato_bgp_peers = flatten([
-    for r_key, hub in local.all_hubs : length(hub.virtual_router_ips) >= 2 ? [
+    for r_key, hub in local.all_hubs : [
       # Primary BGP peer to first vWAN hub router IP
       {
         location_name = r_key
@@ -51,6 +51,6 @@ locals {
         site_id       = cato_socket_site.azure-site[r_key].id
         peer_asn      = hub.virtual_router_asn # Always 65515 for Azure vWAN hubs
       }
-    ] : []
+    ] 
   ])
 }
