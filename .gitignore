@@ -1,37 +1,139 @@
-# Local .terraform directories
-.terraform/
+# =========================
+# Comprehensive Terraform project .gitignore
+# Updated: 2025-01-15
+# =========================
 
-# .tfstate files
+# Terraform
+**/.terraform/*
 *.tfstate
 *.tfstate.*
-
-# Crash log files
 crash.log
 crash.*.log
-
-# Exclude all .tfvars files, which are likely to contain sensitive data, such as
-# password, private keys, and other secrets. These should not be part of version 
-# control as they are data points which are potentially sensitive and subject 
-# to change depending on the environment.
-*.tfvars
-*.tfvars.json
-
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
-# Ignore transient lock info files created by terraform apply
-.terraform.tfstate.lock.info
-
-# Include override files you do wish to add to version control using negated pattern
-# !example_override.tf
-
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
-
-# Ignore CLI configuration files
+terraform.tfvars
+terraform.tfvars.json
+*.tfvars
+*.tfvars.json
 .terraformrc
 terraform.rc
+*.tfplan
+*.plan
+plan.out
+.terraform.tfstate.lock.info
+
+# Terragrunt (if used)
+**/.terragrunt-cache/*
+**/.terragrunt-local/*
+*.hcl.local
+
+# Testing directory (as requested)
+testing/
+**/testing/
+test/
+tests/
+
+# VS Code (as requested)
+.vscode/
+*.code-workspace
+.history/
+.vscode-test/
+
+# Warp terminal files (as requested)
+.warp/
+warp.yaml
+warp.yml
+warp.json
+warp-*.yaml
+warp-*.yml
+*.warp.json
+.warp_profile
+
+# macOS system files (as requested)
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+Icon?
+.apdisk
+._*
+
+# Windows system files (cross-platform collaboration)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Other editors
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Python (common in automation scripts)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.env
+.env.local
+
+# Node.js (sometimes used for documentation or tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.envrc
+.direnv/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+
+# Build outputs and cache directories
+dist/
+build/
+out/
+coverage/
+.cache/
+
+# SSH keys and certificates (safety)
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Backup files
+*.backup
+*.bck
+*~
+
+#Testing & Linting 
+.markdownlint.json
