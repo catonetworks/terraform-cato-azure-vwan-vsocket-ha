@@ -293,10 +293,13 @@ resource "azurerm_subnet_network_security_group_association" "lan-association" {
 }
 
 ## Create Route Tables, Routes and Associations 
+# IMPORTANT: BGP route propagation MUST be enabled on the Cato LAN route table
+# to allow the Cato sockets to learn spoke vnet routes from the vWAN hub.
+# Without this, return traffic from spoke vnets to Cato will fail.
 resource "azurerm_route_table" "private-rt" {
   for_each = var.regional_config
 
-  bgp_route_propagation_enabled = false
+  bgp_route_propagation_enabled = true  # Enable BGP propagation for Cato connectivity
   location                      = each.value.location
   name                          = replace(replace("${var.prefix}-${each.key}-viaCato", "-", "_"), " ", "_")
   resource_group_name           = local.rg_name
