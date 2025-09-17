@@ -27,6 +27,7 @@ resource "azurerm_virtual_hub" "vhub_new" {
   address_prefix         = each.value.hub_address_prefix
   sku                    = "Standard"
   hub_routing_preference = each.value.hub_routing_preference
+  branch_to_branch_traffic_enabled = true
   tags                   = merge(var.tags, { region = each.key })
 }
 
