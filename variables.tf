@@ -11,59 +11,22 @@ variable "baseurl" {
   default     = "https://api.catonetworks.com/api/v1/graphql2"
 }
 
-variable "site_description" {
-  description = "(DEPRECATED) A brief description of the site for identification purposes. Use regional_config instead."
-  type        = string
-  default     = null
-}
+# variable "site_location" {
+#   description = "Site location which is used by the Cato Socket to connect to the closest Cato PoP. If not specified, the location will be derived from the Azure region dynamicaly."
+#   type = object({
+#     city         = string
+#     country_code = string
+#     state_code   = string
+#     timezone     = string
+#   })
+#   default = {
+#     city         = null
+#     country_code = null
+#     state_code   = null ## Optional - for countries with states
+#     timezone     = null
+#   }
+# }
 
-variable "site_type" {
-  description = "(DEPRECATED) The type of the site (DATACENTER, BRANCH, CLOUD_DC, HEADQUARTERS). Use regional_config instead."
-  type        = string
-  default     = null
-  validation {
-    condition     = var.site_type == null || contains(["DATACENTER", "BRANCH", "CLOUD_DC", "HEADQUARTERS"], var.site_type)
-    error_message = "The site_type variable must be one of 'DATACENTER','BRANCH','CLOUD_DC','HEADQUARTERS' or null."
-  }
-}
-
-variable "site_name" {
-  description = "(DEPRECATED) The name of the Cato Networks site. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "site_location" {
-  description = "Site location which is used by the Cato Socket to connect to the closest Cato PoP. If not specified, the location will be derived from the Azure region dynamicaly."
-  type = object({
-    city         = string
-    country_code = string
-    state_code   = string
-    timezone     = string
-  })
-  default = {
-    city         = null
-    country_code = null
-    state_code   = null ## Optional - for countries with states
-    timezone     = null
-  }
-}
-
-variable "native_network_range" {
-  type        = string
-  description = <<EOT
-  	(DEPRECATED) Choose a unique range for your Azure environment that does not conflict with the rest of your Wide Area Network.
-    The accepted input format is Standard CIDR Notation, e.g. X.X.X.X/X
-    Use regional_config instead.
-	EOT
-  default     = null
-}
-
-variable "vm_size" {
-  description = "(DEPRECATED) Specifies the size of the Virtual Machine. Use regional_config instead. See Azure VM Naming Conventions: https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions"
-  type        = string
-  default     = null
-}
 
 variable "disk_size_gb" {
   description = "Size of the managed disk in GB."
@@ -75,26 +38,6 @@ variable "disk_size_gb" {
   }
 }
 
-## VSocket Params - DEPRECATED: Use regional_config instead
-
-variable "location" {
-  description = "(DEPRECATED) The Azure region where the resources should be deployed. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "floating_ip" {
-  description = "(DEPRECATED) The floating IP address used for High Availability (HA) failover. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "lan_subnet_name" {
-  description = "(DEPRECATED) The name of the LAN subnet within the specified VNET. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
 variable "commands" {
   type = list(string)
   default = [
@@ -102,19 +45,6 @@ variable "commands" {
     "rm /cato/socket/configuration/socket_registration.json",
     "nohup /cato/socket/run_socket_daemon.sh &"
   ]
-}
-
-## VNET Variables - DEPRECATED: Use regional_config instead
-variable "lan_ip_primary" {
-  type        = string
-  description = "(DEPRECATED) Local IP Address of socket LAN interface. Use regional_config instead."
-  default     = null
-}
-
-variable "lan_ip_secondary" {
-  type        = string
-  description = "(DEPRECATED) Local IP Address of socket LAN interface. Use regional_config instead."
-  default     = null
 }
 
 variable "dns_servers" {
