@@ -5,7 +5,7 @@ resource "azurerm_network_security_group" "mgmt-sg" {
 
   location            = each.value.location
   name                = replace(replace("${each.value.site_name}-MGMTSecurityGroup", "-", "_"), " ", "_")
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
 
   security_rule {
     name                       = "Allow-DNS-TCP"
@@ -75,7 +75,7 @@ resource "azurerm_network_security_group" "wan-sg" {
 
   location            = each.value.location
   name                = replace(replace("${each.value.site_name}-WANSecurityGroup", "-", "_"), " ", "_")
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
 
   security_rule {
     name                       = "Allow-DNS-TCP"
@@ -145,7 +145,7 @@ resource "azurerm_network_security_group" "lan-sg" {
 
   location            = each.value.location
   name                = replace(replace("${each.value.site_name}-LANSecurityGroup", "-", "_"), " ", "_")
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
 
   security_rule {
     name                       = "Allow-All-Inbound"

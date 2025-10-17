@@ -4,7 +4,7 @@ resource "azurerm_user_assigned_identity" "CatoHaIdentity" {
 
   location            = each.value.location
   name                = "${each.value.site_name}-CatoHaIdentity" ###Needing to be unique add ${sitename}-
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   tags                = merge(var.tags, { region = each.key })
 }
 

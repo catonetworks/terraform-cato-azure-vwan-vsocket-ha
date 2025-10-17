@@ -3,7 +3,7 @@ data "azurerm_network_interface" "wan-mac-primary" {
   for_each = var.regional_config
 
   name                = azurerm_network_interface.wan-nic-primary[each.key].name
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   depends_on          = [time_sleep.sleep_5_seconds]
 }
 
@@ -11,7 +11,7 @@ data "azurerm_network_interface" "lan-mac-primary" {
   for_each = var.regional_config
 
   name                = azurerm_network_interface.lan-nic-primary[each.key].name
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   depends_on          = [time_sleep.sleep_5_seconds]
 }
 
@@ -19,7 +19,7 @@ data "azurerm_network_interface" "wan-mac-secondary" {
   for_each = var.regional_config
 
   name                = azurerm_network_interface.wan-nic-secondary[each.key].name
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   depends_on          = [time_sleep.sleep_5_seconds_secondary]
 }
 
@@ -27,7 +27,7 @@ data "azurerm_network_interface" "lan-mac-secondary" {
   for_each = var.regional_config
 
   name                = azurerm_network_interface.lan-nic-secondary[each.key].name
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   depends_on          = [time_sleep.sleep_5_seconds_secondary]
 }
 
@@ -38,7 +38,7 @@ resource "azurerm_linux_virtual_machine" "vsocket_primary" {
   location            = each.value.location
   name                = "${each.value.site_name}-vSocket-Primary"
   computer_name       = replace("${each.value.site_name}-vSocket-Primary", "/[\\\\/\\[\\]:|<>+=;,?*@&~!#$%^()_{}' ]/", "-")
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   size                = each.value.vm_size
   network_interface_ids = [
     azurerm_network_interface.mgmt-nic-primary[each.key].id,
@@ -125,7 +125,7 @@ resource "azurerm_linux_virtual_machine" "vsocket_secondary" {
   location            = each.value.location
   name                = "${each.value.site_name}-vSocket-Secondary"
   computer_name       = replace("${each.value.site_name}-vSocket-Secondary", "/[\\\\/\\[\\]:|<>+=;,?*@&~!#$%^()_{}' ]/", "-")
-  resource_group_name = local.rg_name
+  resource_group_name = local.cato_rg_names[each.key]
   size                = each.value.vm_size
   network_interface_ids = [
     azurerm_network_interface.mgmt-nic-secondary[each.key].id,

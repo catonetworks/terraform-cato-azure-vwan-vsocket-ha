@@ -17,8 +17,41 @@ locals {
     region_key => [for s in data.cato_accountSnapshotSite.azure-site-secondary[region_key].info.sockets : s.serial if s.is_primary == false]
   }
 
-  # Determine the name of the resource group to use.
-  rg_name = var.create_resource_group ? azurerm_resource_group.rg[0].name : data.azurerm_resource_group.existing_rg[0].name
+  # --- NEW: Multi-Resource Group Logic ---
+  
+  # Determine vWAN resource group name
+  vwan_rg_name = (
+    # New configuration takes precedence
+    var.vwan_resource_group != null ?
+      (var.vwan_resource_group.create_new ? var.vwan_resource_group.name : var.vwan_resource_group.use_existing) :
+    # Fall back to legacy configuration for backward compatibility
+    var.create_resource_group ? var.resource_group_name :
+    (var.existing_resource_group_name != "" ? var.existing_resource_group_name : "ERROR-NO-RG-SPECIFIED")
+  )
+  
+  # Determine vHub resource group names (per region)
+  vhub_rg_names = {
+    for region_key, region_config in var.regional_config :
+    region_key => (
+      region_config.vhub_resource_group.strategy == "use_vwan_rg" ? local.vwan_rg_name :
+      region_config.vhub_resource_group.name
+    )
+  }
+  
+  # Determine Cato resource group names (per region)
+  cato_rg_names = {
+    for region_key, region_config in var.regional_config :
+    region_key => (
+      # If cato_resource_group.name is null, fall back to legacy behavior (use vWAN RG)
+      region_config.cato_resource_group.name != null ?
+        region_config.cato_resource_group.name :
+        local.vwan_rg_name
+    )
+  }
+  
+  # --- DEPRECATED: Legacy resource group name (for backward compatibility) ---
+  # This maintains the original behavior for existing resources that haven't been updated yet
+  rg_name = local.vwan_rg_name
 
   # Determine the ID of the Virtual WAN to use.
   vwan_id = var.create_vwan ? azurerm_virtual_wan.vwan[0].id : data.azurerm_virtual_wan.existing_vwan[0].id
