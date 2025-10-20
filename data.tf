@@ -24,12 +24,12 @@ data "cato_accountSnapshotSite" "azure-site-2" {
 data "azurerm_resource_group" "vwan_existing" {
   count = (
     # New configuration takes precedence
-    var.vwan_resource_group != null ? 
-      (!var.vwan_resource_group.create_new ? 1 : 0) :
+    var.vwan_resource_group != null ?
+    (!var.vwan_resource_group.create_new ? 1 : 0) :
     # Fall back to legacy configuration for backward compatibility
     !var.create_resource_group ? 1 : 0
   )
-  
+
   name = local.vwan_rg_name
 }
 
@@ -40,7 +40,7 @@ data "azurerm_resource_group" "vhub_existing" {
     region_key => region_config
     if region_config.vhub_resource_group.strategy == "use_existing"
   }
-  
+
   name = each.value.vhub_resource_group.name
 }
 
@@ -52,13 +52,13 @@ data "azurerm_resource_group" "cato_existing" {
     # Only create data source if name is not null (not legacy fallback) and strategy is use_existing
     if region_config.cato_resource_group.name != null && region_config.cato_resource_group.strategy == "use_existing"
   }
-  
+
   name = each.value.cato_resource_group.name
 }
 
 # --- DEPRECATED: Legacy Resource Group Data Source (for backward compatibility) ---
 data "azurerm_resource_group" "existing_rg" {
-  count = 0  # Disabled - functionality moved to vwan_existing
+  count = 0 # Disabled - functionality moved to vwan_existing
 
   name = var.existing_resource_group_name
 }

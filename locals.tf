@@ -18,17 +18,17 @@ locals {
   }
 
   # --- NEW: Multi-Resource Group Logic ---
-  
+
   # Determine vWAN resource group name
   vwan_rg_name = (
     # New configuration takes precedence
     var.vwan_resource_group != null ?
-      (var.vwan_resource_group.create_new ? var.vwan_resource_group.name : var.vwan_resource_group.use_existing) :
+    (var.vwan_resource_group.create_new ? var.vwan_resource_group.name : var.vwan_resource_group.use_existing) :
     # Fall back to legacy configuration for backward compatibility
     var.create_resource_group ? var.resource_group_name :
     (var.existing_resource_group_name != "" ? var.existing_resource_group_name : "ERROR-NO-RG-SPECIFIED")
   )
-  
+
   # Determine vHub resource group names (per region)
   vhub_rg_names = {
     for region_key, region_config in var.regional_config :
@@ -37,18 +37,18 @@ locals {
       region_config.vhub_resource_group.name
     )
   }
-  
+
   # Determine Cato resource group names (per region)
   cato_rg_names = {
     for region_key, region_config in var.regional_config :
     region_key => (
       # If cato_resource_group.name is null, fall back to legacy behavior (use vWAN RG)
       region_config.cato_resource_group.name != null ?
-        region_config.cato_resource_group.name :
-        local.vwan_rg_name
+      region_config.cato_resource_group.name :
+      local.vwan_rg_name
     )
   }
-  
+
   # --- DEPRECATED: Legacy resource group name (for backward compatibility) ---
   # This maintains the original behavior for existing resources that haven't been updated yet
   rg_name = local.vwan_rg_name
@@ -84,6 +84,6 @@ locals {
         site_id       = cato_socket_site.azure-site[r_key].id
         peer_asn      = hub.virtual_router_asn # Always 65515 for Azure vWAN hubs
       }
-    ] 
+    ]
   ])
 }

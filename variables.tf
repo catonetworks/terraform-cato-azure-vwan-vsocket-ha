@@ -247,8 +247,8 @@ variable "vwan_resource_group" {
   description = "Configuration for the Virtual WAN resource group."
   type = object({
     create_new   = bool
-    name         = optional(string)  # Required when create_new = true
-    use_existing = optional(string)  # Required when create_new = false
+    name         = optional(string) # Required when create_new = true
+    use_existing = optional(string) # Required when create_new = false
   })
   default = null
 
@@ -362,23 +362,23 @@ variable "regional_config" {
     existing_hub_name      = optional(string)
     hub_address_prefix     = optional(string)
     hub_routing_preference = optional(string, "ASPath") # ASPath (default), ExpressRoute, or VpnGateway
-    
+
     # --- NEW: vHub Resource Group Configuration ---
     vhub_resource_group = optional(object({
-      strategy = string # "use_vwan_rg", "create_new", or "use_existing"
+      strategy = string           # "use_vwan_rg", "create_new", or "use_existing"
       name     = optional(string) # Required when strategy = "create_new" or "use_existing"
-    }), {
+      }), {
       strategy = "use_vwan_rg"
       name     = null
     })
-    
+
     # --- NEW: Cato Resource Group Configuration ---  
     cato_resource_group = optional(object({
-      strategy = string # "create_new", "use_shared", or "use_existing"
+      strategy = string           # "create_new", "use_shared", or "use_existing"
       name     = optional(string) # Required for all strategies except legacy fallback
-    }), {
+      }), {
       strategy = "create_new"
-      name     = null  # Null triggers legacy fallback behavior
+      name     = null # Null triggers legacy fallback behavior
     })
   }))
   # Validate all locations are valid Azure regions
@@ -448,7 +448,7 @@ variable "regional_config" {
     ])
     error_message = "Hub address prefix must be a valid CIDR notation if provided."
   }
-  
+
   # Validate vHub resource group configuration
   validation {
     condition = alltrue([
@@ -457,7 +457,7 @@ variable "regional_config" {
     ])
     error_message = "vHub resource group strategy must be one of: 'use_vwan_rg', 'create_new', or 'use_existing'."
   }
-  
+
   validation {
     condition = alltrue([
       for config in values(var.regional_config) :
@@ -466,7 +466,7 @@ variable "regional_config" {
     ])
     error_message = "vHub resource group 'name' is required when strategy is 'create_new' or 'use_existing', and must be null when strategy is 'use_vwan_rg'."
   }
-  
+
   validation {
     condition = alltrue([
       for config in values(var.regional_config) :
@@ -478,7 +478,7 @@ variable "regional_config" {
     ])
     error_message = "vHub resource group name must be 1-90 characters, can contain letters, numbers, underscores, hyphens, periods, and parentheses, and cannot end with a period."
   }
-  
+
   # Validate Cato resource group configuration
   validation {
     condition = alltrue([
@@ -487,7 +487,7 @@ variable "regional_config" {
     ])
     error_message = "Cato resource group strategy must be one of: 'create_new', 'use_shared', or 'use_existing'."
   }
-  
+
   validation {
     condition = alltrue([
       for config in values(var.regional_config) :
@@ -496,7 +496,7 @@ variable "regional_config" {
     ])
     error_message = "Cato resource group 'name' is required for strategies 'use_shared' and 'use_existing'. For 'create_new' strategy, null name triggers legacy fallback behavior."
   }
-  
+
   validation {
     condition = alltrue([
       for config in values(var.regional_config) :
