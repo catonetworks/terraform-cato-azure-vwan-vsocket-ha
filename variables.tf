@@ -11,59 +11,22 @@ variable "baseurl" {
   default     = "https://api.catonetworks.com/api/v1/graphql2"
 }
 
-variable "site_description" {
-  description = "(DEPRECATED) A brief description of the site for identification purposes. Use regional_config instead."
-  type        = string
-  default     = null
-}
+# variable "site_location" {
+#   description = "Site location which is used by the Cato Socket to connect to the closest Cato PoP. If not specified, the location will be derived from the Azure region dynamicaly."
+#   type = object({
+#     city         = string
+#     country_code = string
+#     state_code   = string
+#     timezone     = string
+#   })
+#   default = {
+#     city         = null
+#     country_code = null
+#     state_code   = null ## Optional - for countries with states
+#     timezone     = null
+#   }
+# }
 
-variable "site_type" {
-  description = "(DEPRECATED) The type of the site (DATACENTER, BRANCH, CLOUD_DC, HEADQUARTERS). Use regional_config instead."
-  type        = string
-  default     = null
-  validation {
-    condition     = var.site_type == null || contains(["DATACENTER", "BRANCH", "CLOUD_DC", "HEADQUARTERS"], var.site_type)
-    error_message = "The site_type variable must be one of 'DATACENTER','BRANCH','CLOUD_DC','HEADQUARTERS' or null."
-  }
-}
-
-variable "site_name" {
-  description = "(DEPRECATED) The name of the Cato Networks site. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "site_location" {
-  description = "Site location which is used by the Cato Socket to connect to the closest Cato PoP. If not specified, the location will be derived from the Azure region dynamicaly."
-  type = object({
-    city         = string
-    country_code = string
-    state_code   = string
-    timezone     = string
-  })
-  default = {
-    city         = null
-    country_code = null
-    state_code   = null ## Optional - for countries with states
-    timezone     = null
-  }
-}
-
-variable "native_network_range" {
-  type        = string
-  description = <<EOT
-  	(DEPRECATED) Choose a unique range for your Azure environment that does not conflict with the rest of your Wide Area Network.
-    The accepted input format is Standard CIDR Notation, e.g. X.X.X.X/X
-    Use regional_config instead.
-	EOT
-  default     = null
-}
-
-variable "vm_size" {
-  description = "(DEPRECATED) Specifies the size of the Virtual Machine. Use regional_config instead. See Azure VM Naming Conventions: https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions"
-  type        = string
-  default     = null
-}
 
 variable "disk_size_gb" {
   description = "Size of the managed disk in GB."
@@ -75,26 +38,6 @@ variable "disk_size_gb" {
   }
 }
 
-## VSocket Params - DEPRECATED: Use regional_config instead
-
-variable "location" {
-  description = "(DEPRECATED) The Azure region where the resources should be deployed. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "floating_ip" {
-  description = "(DEPRECATED) The floating IP address used for High Availability (HA) failover. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
-variable "lan_subnet_name" {
-  description = "(DEPRECATED) The name of the LAN subnet within the specified VNET. Use regional_config instead."
-  type        = string
-  default     = null
-}
-
 variable "commands" {
   type = list(string)
   default = [
@@ -102,19 +45,6 @@ variable "commands" {
     "rm /cato/socket/configuration/socket_registration.json",
     "nohup /cato/socket/run_socket_daemon.sh &"
   ]
-}
-
-## VNET Variables - DEPRECATED: Use regional_config instead
-variable "lan_ip_primary" {
-  type        = string
-  description = "(DEPRECATED) Local IP Address of socket LAN interface. Use regional_config instead."
-  default     = null
-}
-
-variable "lan_ip_secondary" {
-  type        = string
-  description = "(DEPRECATED) Local IP Address of socket LAN interface. Use regional_config instead."
-  default     = null
 }
 
 variable "dns_servers" {
@@ -255,14 +185,19 @@ variable "primary_location" {
   }
 }
 
+# --- DEPRECATED: Legacy Resource Group Variables ---
+# These variables are maintained for backward compatibility.
+# For new deployments, use 'vwan_resource_group' and the resource group
+# configurations within 'regional_config' instead.
+
 variable "create_resource_group" {
-  description = "Set to true to create a new resource group. If false, existing_resource_group_name must be provided."
+  description = "[DEPRECATED] Set to true to create a new resource group. If false, existing_resource_group_name must be provided. Use 'vwan_resource_group' and 'regional_config.*.cato_resource_group' instead."
   type        = bool
   default     = true
 }
 
 variable "resource_group_name" {
-  description = "The name of the Azure Resource Group to create. Only used if create_resource_group is true."
+  description = "[DEPRECATED] The name of the Azure Resource Group to create. Only used if create_resource_group is true. Use 'vwan_resource_group' and 'regional_config.*.cato_resource_group' instead."
   type        = string
   default     = "cato-vwan-rg"
 
@@ -273,7 +208,7 @@ variable "resource_group_name" {
 }
 
 variable "existing_resource_group_name" {
-  description = "The name of an existing resource group to use. Only used if create_resource_group is false."
+  description = "[DEPRECATED] The name of an existing resource group to use. Only used if create_resource_group is false. Use 'vwan_resource_group' and 'regional_config.*.cato_resource_group' instead."
   type        = string
   default     = ""
 
@@ -304,6 +239,48 @@ variable "tags" {
   description = "A map of tags to apply to all resources."
   type        = map(string)
   default     = {}
+}
+
+# --- NEW: Multi-Resource Group Configuration ---
+
+variable "vwan_resource_group" {
+  description = "Configuration for the Virtual WAN resource group."
+  type = object({
+    create_new   = bool
+    name         = optional(string) # Required when create_new = true
+    use_existing = optional(string) # Required when create_new = false
+  })
+  default = null
+
+  validation {
+    condition = var.vwan_resource_group == null || (
+      (var.vwan_resource_group.create_new && var.vwan_resource_group.name != null) ||
+      (!var.vwan_resource_group.create_new && var.vwan_resource_group.use_existing != null)
+    )
+    error_message = "When vwan_resource_group is specified: create_new=true requires 'name', create_new=false requires 'use_existing'."
+  }
+
+  validation {
+    condition = var.vwan_resource_group == null || (
+      var.vwan_resource_group.name == null || (
+        can(regex("^[a-zA-Z0-9._()-]+[^.]$", var.vwan_resource_group.name)) &&
+        length(var.vwan_resource_group.name) >= 1 &&
+        length(var.vwan_resource_group.name) <= 90
+      )
+    )
+    error_message = "vWAN resource group name must be 1-90 characters, can contain letters, numbers, underscores, hyphens, periods, and parentheses, and cannot end with a period."
+  }
+
+  validation {
+    condition = var.vwan_resource_group == null || (
+      var.vwan_resource_group.use_existing == null || (
+        can(regex("^[a-zA-Z0-9._()-]+[^.]$", var.vwan_resource_group.use_existing)) &&
+        length(var.vwan_resource_group.use_existing) >= 1 &&
+        length(var.vwan_resource_group.use_existing) <= 90
+      )
+    )
+    error_message = "vWAN existing resource group name must be 1-90 characters, can contain letters, numbers, underscores, hyphens, periods, and parentheses, and cannot end with a period."
+  }
 }
 
 # --- Cato & Azure Authentication Variables ---
@@ -385,6 +362,24 @@ variable "regional_config" {
     existing_hub_name      = optional(string)
     hub_address_prefix     = optional(string)
     hub_routing_preference = optional(string, "ASPath") # ASPath (default), ExpressRoute, or VpnGateway
+
+    # --- NEW: vHub Resource Group Configuration ---
+    vhub_resource_group = optional(object({
+      strategy = string           # "use_vwan_rg", "create_new", or "use_existing"
+      name     = optional(string) # Required when strategy = "create_new" or "use_existing"
+      }), {
+      strategy = "use_vwan_rg"
+      name     = null
+    })
+
+    # --- NEW: Cato Resource Group Configuration ---  
+    cato_resource_group = optional(object({
+      strategy = string           # "create_new", "use_shared", or "use_existing"
+      name     = optional(string) # Required for all strategies except legacy fallback
+      }), {
+      strategy = "create_new"
+      name     = null # Null triggers legacy fallback behavior
+    })
   }))
   # Validate all locations are valid Azure regions
   validation {
@@ -452,6 +447,66 @@ variable "regional_config" {
       config.hub_address_prefix == null || can(cidrhost(config.hub_address_prefix, 0))
     ])
     error_message = "Hub address prefix must be a valid CIDR notation if provided."
+  }
+
+  # Validate vHub resource group configuration
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      contains(["use_vwan_rg", "create_new", "use_existing"], config.vhub_resource_group.strategy)
+    ])
+    error_message = "vHub resource group strategy must be one of: 'use_vwan_rg', 'create_new', or 'use_existing'."
+  }
+
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      (config.vhub_resource_group.strategy == "use_vwan_rg" && config.vhub_resource_group.name == null) ||
+      (config.vhub_resource_group.strategy != "use_vwan_rg" && config.vhub_resource_group.name != null)
+    ])
+    error_message = "vHub resource group 'name' is required when strategy is 'create_new' or 'use_existing', and must be null when strategy is 'use_vwan_rg'."
+  }
+
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      config.vhub_resource_group.name == null || (
+        can(regex("^[a-zA-Z0-9._()-]+[^.]$", config.vhub_resource_group.name)) &&
+        length(config.vhub_resource_group.name) >= 1 &&
+        length(config.vhub_resource_group.name) <= 90
+      )
+    ])
+    error_message = "vHub resource group name must be 1-90 characters, can contain letters, numbers, underscores, hyphens, periods, and parentheses, and cannot end with a period."
+  }
+
+  # Validate Cato resource group configuration
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      contains(["create_new", "use_shared", "use_existing"], config.cato_resource_group.strategy)
+    ])
+    error_message = "Cato resource group strategy must be one of: 'create_new', 'use_shared', or 'use_existing'."
+  }
+
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      # Allow null name only when using default strategy "create_new" for legacy compatibility
+      config.cato_resource_group.name != null || config.cato_resource_group.strategy == "create_new"
+    ])
+    error_message = "Cato resource group 'name' is required for strategies 'use_shared' and 'use_existing'. For 'create_new' strategy, null name triggers legacy fallback behavior."
+  }
+
+  validation {
+    condition = alltrue([
+      for config in values(var.regional_config) :
+      config.cato_resource_group.name == null || (
+        can(regex("^[a-zA-Z0-9._()-]+[^.]$", config.cato_resource_group.name)) &&
+        length(config.cato_resource_group.name) >= 1 &&
+        length(config.cato_resource_group.name) <= 90
+      )
+    ])
+    error_message = "When provided, Cato resource group name must be 1-90 characters, can contain letters, numbers, underscores, hyphens, periods, and parentheses, and cannot end with a period."
   }
 }
 

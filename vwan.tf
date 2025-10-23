@@ -5,7 +5,7 @@ resource "azurerm_virtual_wan" "vwan" {
   count = var.create_vwan ? 1 : 0
 
   name                = "${var.prefix}-vwan"
-  resource_group_name = local.rg_name
+  resource_group_name = local.vwan_rg_name
   location            = var.primary_location
   type                = "Standard"
   tags                = var.tags
@@ -20,15 +20,15 @@ resource "azurerm_virtual_hub" "vhub_new" {
     for k, v in var.regional_config : k => v if v.create_hub
   }
 
-  name                   = "${var.prefix}-vhub-${each.key}"
-  resource_group_name    = local.rg_name
-  location               = each.value.location
-  virtual_wan_id         = local.vwan_id
-  address_prefix         = each.value.hub_address_prefix
-  sku                    = "Standard"
-  hub_routing_preference = each.value.hub_routing_preference
+  name                             = "${var.prefix}-vhub-${each.key}"
+  resource_group_name              = local.vhub_rg_names[each.key]
+  location                         = each.value.location
+  virtual_wan_id                   = local.vwan_id
+  address_prefix                   = each.value.hub_address_prefix
+  sku                              = "Standard"
+  hub_routing_preference           = each.value.hub_routing_preference
   branch_to_branch_traffic_enabled = true
-  tags                   = merge(var.tags, { region = each.key })
+  tags                             = merge(var.tags, { region = each.key })
 }
 
 data "azurerm_virtual_hub" "vhub_existing" {
@@ -38,7 +38,7 @@ data "azurerm_virtual_hub" "vhub_existing" {
   }
 
   name                = each.value.existing_hub_name
-  resource_group_name = local.rg_name
+  resource_group_name = local.vhub_rg_names[each.key]
 }
 
 # -----------------------------------------------------------------

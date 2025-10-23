@@ -97,10 +97,10 @@ resource "null_resource" "run_command_ha_primary" {
   provisioner "local-exec" {
     command = <<EOT
       az vm run-command invoke \
-        --resource-group ${local.rg_name} \
+        --resource-group ${local.cato_rg_names[each.key]} \
         --name "${each.value.site_name}-vSocket-Primary" \
         --command-id RunShellScript \
-        --scripts "echo '{\"location\": \"${each.value.location}\", \"subscription_id\": \"${var.azure_subscription_id}\", \"vnet\": \"${azurerm_virtual_network.vnet[each.key].name}\", \"group\": \"${local.rg_name}\", \"vnet_group\": \"${local.rg_name}\", \"subnet\": \"${azurerm_subnet.subnet-lan[each.key].name}\", \"nic\": \"${azurerm_network_interface.lan-nic-primary[each.key].name}\", \"ha_nic\": \"${azurerm_network_interface.lan-nic-secondary[each.key].name}\", \"lan_nic_ip\": \"${azurerm_network_interface.lan-nic-primary[each.key].private_ip_address}\", \"lan_nic_mac\": \"${data.azurerm_network_interface.lan-mac-primary[each.key].mac_address}\", \"subnet_cidr\": \"${each.value.subnet_range_lan}\", \"az_mgmt_url\": \"management.azure.com\"}' > /cato/socket/configuration/vm_config.json"
+        --scripts "echo '{\"location\": \"${each.value.location}\", \"subscription_id\": \"${var.azure_subscription_id}\", \"vnet\": \"${azurerm_virtual_network.vnet[each.key].name}\", \"group\": \"${local.cato_rg_names[each.key]}\", \"vnet_group\": \"${local.cato_rg_names[each.key]}\", \"subnet\": \"${azurerm_subnet.subnet-lan[each.key].name}\", \"nic\": \"${azurerm_network_interface.lan-nic-primary[each.key].name}\", \"ha_nic\": \"${azurerm_network_interface.lan-nic-secondary[each.key].name}\", \"lan_nic_ip\": \"${azurerm_network_interface.lan-nic-primary[each.key].private_ip_address}\", \"lan_nic_mac\": \"${data.azurerm_network_interface.lan-mac-primary[each.key].mac_address}\", \"subnet_cidr\": \"${each.value.subnet_range_lan}\", \"az_mgmt_url\": \"management.azure.com\"}' > /cato/socket/configuration/vm_config.json"
     EOT
   }
 
@@ -116,10 +116,10 @@ resource "null_resource" "run_command_ha_secondary" {
   provisioner "local-exec" {
     command = <<EOT
       az vm run-command invoke \
-        --resource-group ${local.rg_name} \
+        --resource-group ${local.cato_rg_names[each.key]} \
         --name "${each.value.site_name}-vSocket-Secondary" \
         --command-id RunShellScript \
-        --scripts "echo '{\"location\": \"${each.value.location}\", \"subscription_id\": \"${var.azure_subscription_id}\", \"vnet\": \"${azurerm_virtual_network.vnet[each.key].name}\", \"group\": \"${local.rg_name}\", \"vnet_group\": \"${local.rg_name}\", \"subnet\": \"${azurerm_subnet.subnet-lan[each.key].name}\", \"nic\": \"${azurerm_network_interface.lan-nic-secondary[each.key].name}\", \"ha_nic\": \"${azurerm_network_interface.lan-nic-primary[each.key].name}\", \"lan_nic_ip\": \"${azurerm_network_interface.lan-nic-secondary[each.key].private_ip_address}\", \"lan_nic_mac\": \"${data.azurerm_network_interface.lan-mac-secondary[each.key].mac_address}\", \"subnet_cidr\": \"${each.value.subnet_range_lan}\", \"az_mgmt_url\": \"management.azure.com\"}' > /cato/socket/configuration/vm_config.json"
+        --scripts "echo '{\"location\": \"${each.value.location}\", \"subscription_id\": \"${var.azure_subscription_id}\", \"vnet\": \"${azurerm_virtual_network.vnet[each.key].name}\", \"group\": \"${local.cato_rg_names[each.key]}\", \"vnet_group\": \"${local.cato_rg_names[each.key]}\", \"subnet\": \"${azurerm_subnet.subnet-lan[each.key].name}\", \"nic\": \"${azurerm_network_interface.lan-nic-secondary[each.key].name}\", \"ha_nic\": \"${azurerm_network_interface.lan-nic-primary[each.key].name}\", \"lan_nic_ip\": \"${azurerm_network_interface.lan-nic-secondary[each.key].private_ip_address}\", \"lan_nic_mac\": \"${data.azurerm_network_interface.lan-mac-secondary[each.key].mac_address}\", \"subnet_cidr\": \"${each.value.subnet_range_lan}\", \"az_mgmt_url\": \"management.azure.com\"}' > /cato/socket/configuration/vm_config.json"
     EOT
   }
 
@@ -145,7 +145,7 @@ resource "null_resource" "reboot_vsocket_primary" {
 
   provisioner "local-exec" {
     command = <<EOT
-      az vm restart --resource-group "${local.rg_name}" --name "${each.value.site_name}-vSocket-Primary"
+      az vm restart --resource-group "${local.cato_rg_names[each.key]}" --name "${each.value.site_name}-vSocket-Primary"
     EOT
   }
 
@@ -159,7 +159,7 @@ resource "null_resource" "reboot_vsocket_secondary" {
 
   provisioner "local-exec" {
     command = <<EOT
-      az vm restart --resource-group "${local.rg_name}" --name "${each.value.site_name}-vSocket-Secondary"
+      az vm restart --resource-group "${local.cato_rg_names[each.key]}" --name "${each.value.site_name}-vSocket-Secondary"
     EOT
   }
 

@@ -23,6 +23,7 @@ terraform.rc
 *.plan
 plan.out
 .terraform.tfstate.lock.info
+.terraform.lock.hcl
 
 # Terragrunt (if used)
 **/.terragrunt-cache/*
