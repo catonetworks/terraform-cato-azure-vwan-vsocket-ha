@@ -81,3 +81,7 @@
 - Terraform >= 1.5.0
 - Azure Provider >= 4.36.0
 - Cato Provider >= 0.0.42
+
+## 0.1.1 (2026-02-18)
+### Features
+- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
