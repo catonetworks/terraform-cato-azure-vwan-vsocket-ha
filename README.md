@@ -368,7 +368,7 @@ This module supports all major Azure regions. For the complete list of supported
 1. **Obtain Cato API credentials:**
 
    ```bash
-   export TF_VAR_cato_token="your-api-token"
+   export TF_VAR_CATO_TOKEN="your-api-token"
    export TF_VAR_cato_account_id="your-account-id"
    ```
 
@@ -449,8 +449,8 @@ The module handles sensitive credentials securely:
 
 ```hcl
 # Use environment variables (recommended)
-export TF_VAR_cato_token="your-api-token"
-export TF_VAR_cato_account_id="your-account-id"
+export TF_VAR_CATO_TOKEN="your-api-token"
+export TF_VAR_CATO_ACCOUNT_ID="your-account-id"
 
 # Or use terraform.tfvars (ensure it's in .gitignore)
 cato_token     = "your-api-token"
@@ -513,7 +513,7 @@ terraform {
 # ===============================================================================
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -521,7 +521,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = ">= 0.0.42"
+      version = "0.0.57-1"
     }
   }
 }
@@ -725,7 +725,7 @@ module "cato_multiregional_new_vwan" {
 # ===============================================================================
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -733,7 +733,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = ">= 0.0.42"
+      version = "0.0.57-1"
     }
   }
 }
@@ -942,7 +942,7 @@ module "cato_multiregional_existing_vwan" {
 # ===============================================================================
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -950,7 +950,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = ">= 0.0.42"
+      version = "0.0.57-1"
     }
   }
 }
@@ -1212,7 +1212,7 @@ module "cato_multiregional_existing_infrastructure" {
 # ===============================================================================
 
 terraform {
-  required_version = ">= 1.5.0"
+  required_version = ">= 1.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -1220,7 +1220,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = ">= 0.0.42"
+      version = "0.0.57-1"
     }
   }
 }
@@ -1381,8 +1381,8 @@ For more information on site_location syntax, use the [Cato CLI](https://github.
 
 ```bash
 $ pip3 install catocli
-$ export CATO_TOKEN="your-api-token-here"
-$ export CATO_ACCOUNT_ID="your-account-id"
+$ export TF_VAR_CATO_TOKEN="your-api-token-here"
+$ export TF_VAR_CATO_ACCOUNT_ID="your-account-id"
 $ catocli query siteLocation -h
 $ catocli query siteLocation '{"filters":[{"search": "San Diego","field":"city","operation":"exact"}]}' -p
 ```
@@ -1408,8 +1408,8 @@ The module creates a highly available Cato vSocket deployment integrated with Az
 
 | Module Version | Terraform | Azure Provider | Cato Provider | New Features |
 |---------------|-----------|----------------|---------------|--------------|
-| 0.1.0+        | >= 1.5.0  | >= 4.36.0      | >= 0.0.42     | Multi-Resource Group Support |
-| 0.0.1-0.0.x   | >= 1.5.0  | >= 4.36.0      | >= 0.0.42     | Basic Multi-Regional vWAN Integration |
+| 0.1.0+        | >= 1.5.0  | >= 4.36.0      | 0.0.57-1     | Multi-Resource Group Support |
+| 0.0.1-0.0.x   | >= 1.5.0  | >= 4.36.0      | 0.0.57-1     | Basic Multi-Regional vWAN Integration |
 
 ## Authors
 
@@ -1423,20 +1423,20 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=4.36.0 |
-| <a name="requirement_cato"></a> [cato](#requirement\_cato) | >= 0.0.42 |
+| <a name="requirement_cato"></a> [cato](#requirement\_cato) | 0.0.57-1 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.48.0 |
-| <a name="provider_cato"></a> [cato](#provider\_cato) | 0.0.47 |
-| <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.13.1 |
+| ---- | ------- |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >=4.36.0 |
+| <a name="provider_cato"></a> [cato](#provider\_cato) | 0.0.57-1 |
+| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
@@ -1445,7 +1445,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_availability_set.availability-set](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/availability_set) | resource |
 | [azurerm_linux_virtual_machine.vsocket_primary](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine) | resource |
 | [azurerm_linux_virtual_machine.vsocket_secondary](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine) | resource |
@@ -1492,11 +1492,11 @@ No modules.
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
 | [azurerm_virtual_network_dns_servers.dns_servers](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_dns_servers) | resource |
 | [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
-| [cato_bgp_peer.vwan_peering](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/resources/bgp_peer) | resource |
-| [cato_license.license](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/resources/license) | resource |
-| [cato_network_range.hub_routed_range](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/resources/network_range) | resource |
-| [cato_network_range.routedAzure](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/resources/network_range) | resource |
-| [cato_socket_site.azure-site](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/resources/socket_site) | resource |
+| [cato_bgp_peer.vwan_peering](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/bgp_peer) | resource |
+| [cato_license.license](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/license) | resource |
+| [cato_network_range.hub_routed_range](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/network_range) | resource |
+| [cato_network_range.routedAzure](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/network_range) | resource |
+| [cato_socket_site.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/socket_site) | resource |
 | [null_resource.configure_secondary_azure_vsocket](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.delay](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.delay-600](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -1522,15 +1522,15 @@ No modules.
 | [azurerm_virtual_network.cato_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.custom-vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_wan.existing_vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_wan) | data source |
-| [cato_accountSnapshotSite.azure-site](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_accountSnapshotSite.azure-site-2](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_accountSnapshotSite.azure-site-secondary](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_siteLocation.site_location](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/siteLocation) | data source |
+| [cato_accountSnapshotSite.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_accountSnapshotSite.azure-site-2](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_accountSnapshotSite.azure-site-secondary](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_siteLocation.site_location](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/siteLocation) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_azure_subscription_id"></a> [azure\_subscription\_id](#input\_azure\_subscription\_id) | The Azure Subscription ID where resources will be deployed. | `string` | n/a | yes |
 | <a name="input_baseurl"></a> [baseurl](#input\_baseurl) | Base URL for the Cato Networks API. | `string` | `"https://api.catonetworks.com/api/v1/graphql2"` | no |
 | <a name="input_cato_account_id"></a> [cato\_account\_id](#input\_cato\_account\_id) | Your Cato Account ID. | `string` | n/a | yes |
@@ -1565,7 +1565,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_azure_bgp_connection_details"></a> [azure\_bgp\_connection\_details](#output\_azure\_bgp\_connection\_details) | Details of the BGP connections configured on the Azure Virtual Hub. |
 | <a name="output_cato_bgp_peer_details"></a> [cato\_bgp\_peer\_details](#output\_cato\_bgp\_peer\_details) | Details of the configured Cato BGP peers. |
 | <a name="output_cato_primary_serial"></a> [cato\_primary\_serial](#output\_cato\_primary\_serial) | Map of region to Primary Cato Socket Serial Number |
@@ -1605,3 +1605,4 @@ No modules.
 | <a name="output_wan_primary_nic_id"></a> [wan\_primary\_nic\_id](#output\_wan\_primary\_nic\_id) | Map of region to WAN Primary Network Interface ID |
 | <a name="output_wan_secondary_nic_id"></a> [wan\_secondary\_nic\_id](#output\_wan\_secondary\_nic\_id) | Map of region to WAN Secondary Network Interface ID |
 <!-- END_TF_DOCS -->
+
