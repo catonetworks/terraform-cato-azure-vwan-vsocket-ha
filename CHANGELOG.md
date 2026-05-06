@@ -1,21 +1,14 @@
 # Changelog
 
-## 0.0.1 (2025-09-15) - Initial Release
+## 0.1.2 (2026-05-06)
+
+### Changed
+- Updated AzureRM to 4.71.0
+
+## 0.1.1 (2026-02-18)
 
 ### Features
-- Initial commit of Azure Virtual WAN vSocket HA module
-- Multi-regional deployment support for Cato vSockets across Azure regions
-- Support for three deployment scenarios:
-  - New vWAN, New vHubs, New vSockets
-  - Existing vWAN, New vHubs, New vSockets  
-  - Existing vWAN, Existing vHubs, New vSockets
-- High Availability configuration with primary and secondary vSocket instances
-- BGP peering integration between Cato and Azure Virtual Hub
-- Dynamic site location resolution from Azure region
-- Support for routed networks and static range translation
-- Comprehensive resource management with proper tagging
-- Automated vSocket provisioning and configuration
-- Support for both new and existing Azure infrastructure integration (Greenfield / Brownfield)
+- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
 
 ## 0.1.0 (2025-10-23) - Multi-Resource Group Support
 
@@ -79,9 +72,22 @@
 
 ### 📋 Requirements
 - Terraform >= 1.5.0
-- Azure Provider >= 4.36.0
+- Azure Provider >= 4.71.0
 - Cato Provider >= 0.0.42
 
-## 0.1.1 (2026-02-18)
+## 0.0.1 (2025-09-15) - Initial Release
+
 ### Features
-- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
+- Initial commit of Azure Virtual WAN vSocket HA module
+- Multi-regional deployment support for Cato vSockets across Azure regions
+- Support for three deployment scenarios:
+  - New vWAN, New vHubs, New vSockets
+  - Existing vWAN, New vHubs, New vSockets  
+  - Existing vWAN, Existing vHubs, New vSockets
+- High Availability configuration with primary and secondary vSocket instances
+- BGP peering integration between Cato and Azure Virtual Hub
+- Dynamic site location resolution from Azure region
+- Support for routed networks and static range translation
+- Comprehensive resource management with proper tagging
+- Automated vSocket provisioning and configuration
+- Support for both new and existing Azure infrastructure integration (Greenfield / Brownfield)
