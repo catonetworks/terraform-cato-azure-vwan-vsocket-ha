@@ -343,8 +343,8 @@ Error: Authorization failed when writing to resource group
 ## NOTE
 
 - This module will look up the Cato Site Location information based on the Location of Azure specified.
-- For help with finding exact syntax to match site location for city, state_name, country_name and timezone, please refer to the [cato_siteLocation data source](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/siteLocation).
-- For help with finding a license id to assign, please refer to the [cato_licensingInfo data source](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/licensingInfo).
+- For help with finding exact syntax to match site location for city, state_name, country_name and timezone, please refer to the [cato_siteLocation data source](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/siteLocation).
+- For help with finding a license id to assign, please refer to the [cato_licensingInfo data source](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/licensingInfo).
 - For Translated Ranges, "Enable Static Range Translation" must be enabled. For more information please refer to [Configuring System Settings for the Account](https://support.catonetworks.com/hc/en-us/articles/4413280536849-Configuring-System-Settings-for-the-Account)
 
 ## Prerequisites
@@ -521,7 +521,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = "0.0.57-1"
+      version = ">= 0.0.88"
     }
   }
 }
@@ -733,7 +733,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = "0.0.57-1"
+      version = ">= 0.0.88"
     }
   }
 }
@@ -950,7 +950,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = "0.0.57-1"
+      version = ">= 0.0.88"
     }
   }
 }
@@ -1220,7 +1220,7 @@ terraform {
     }
     cato = {
       source  = "catonetworks/cato"
-      version = "0.0.57-1"
+      version = ">= 0.0.88"
     }
   }
 }
@@ -1492,11 +1492,11 @@ No modules.
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
 | [azurerm_virtual_network_dns_servers.dns_servers](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_dns_servers) | resource |
 | [azurerm_virtual_wan.vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_wan) | resource |
-| [cato_bgp_peer.vwan_peering](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/bgp_peer) | resource |
-| [cato_license.license](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/license) | resource |
-| [cato_network_range.hub_routed_range](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/network_range) | resource |
-| [cato_network_range.routedAzure](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/network_range) | resource |
-| [cato_socket_site.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/resources/socket_site) | resource |
+| [cato_bgp_peer.vwan_peering](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/resources/bgp_peer) | resource |
+| [cato_license.license](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/resources/license) | resource |
+| [cato_network_range.hub_routed_range](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/resources/network_range) | resource |
+| [cato_network_range.routedAzure](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/resources/network_range) | resource |
+| [cato_socket_site.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/resources/socket_site) | resource |
 | [null_resource.configure_secondary_azure_vsocket](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.delay](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.delay-600](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -1522,10 +1522,10 @@ No modules.
 | [azurerm_virtual_network.cato_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.custom-vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_wan.existing_vwan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_wan) | data source |
-| [cato_accountSnapshotSite.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_accountSnapshotSite.azure-site-2](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_accountSnapshotSite.azure-site-secondary](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/accountSnapshotSite) | data source |
-| [cato_siteLocation.site_location](https://registry.terraform.io/providers/catonetworks/cato/0.0.57-1/docs/data-sources/siteLocation) | data source |
+| [cato_accountSnapshotSite.azure-site](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_accountSnapshotSite.azure-site-2](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_accountSnapshotSite.azure-site-secondary](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/accountSnapshotSite) | data source |
+| [cato_siteLocation.site_location](https://registry.terraform.io/providers/catonetworks/cato/0.0.88/docs/data-sources/siteLocation) | data source |
 
 ## Inputs
 
